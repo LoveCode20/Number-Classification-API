@@ -38,8 +38,13 @@ async function getFunFact(n) {
     }
 }
 
-app.get('/api/classify-number/:number', async (req, res) => {
-    const { number } = req.params;
+// Endpoint handling the query parameter
+app.get('/api/classify-number', async (req, res) => {
+    const { number } = req.query; // Destructure the query parameter
+
+    if (number === undefined) {
+        return res.status(400).json({ error: 'Please provide a number query parameter.' });
+    }
 
     if (isNaN(number)) {
         return res.status(400).json({ number, error: true });
@@ -63,6 +68,7 @@ app.get('/api/classify-number/:number', async (req, res) => {
     res.status(200).json(result);
 });
 
+// 404 Error Handler
 app.use((req, res) => {
     res.status(404).json({ error: 'The requested URL was not found on the server.' });
 });
