@@ -38,18 +38,8 @@ async function getFunFact(n) {
     }
 }
 
-// Default route for health check
-app.get('/', (req, res) => {
-    res.send('API is running!');
-});
-
-app.get('/api/classify-number', async (req, res) => {
-    const number = req.query.number;
-
-    // Ensure the number query parameter is provided
-    if (number === undefined) {
-        return res.status(400).json({ error: 'Please provide a number query parameter.' });
-    }
+app.get('/api/classify-number/:number', async (req, res) => {
+    const { number } = req.params;
 
     if (isNaN(number)) {
         return res.status(400).json({ number, error: true });
@@ -73,7 +63,6 @@ app.get('/api/classify-number', async (req, res) => {
     res.status(200).json(result);
 });
 
-// Handle 404 errors
 app.use((req, res) => {
     res.status(404).json({ error: 'The requested URL was not found on the server.' });
 });
